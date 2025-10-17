@@ -1,0 +1,6 @@
+h2o
+scikit-learn==1.1.1
+pyyaml
+pandas
+pyarrow
+numpy==1.24.4
