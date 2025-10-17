@@ -152,7 +152,48 @@ def unseen_domain():
         print("")
     return
 
+def temporal_shift():
+    print("---------------Temporal Shift---------------")
+    data_parent_dir=os.path.join("..","dataset","temporal_shift")
+    model_parent_dir_outdate=os.path.join("..","models","sota_comparison")
+    model_parent_dir_retrain=os.path.join("..","models","temporal_shift")
+    models=["AdGraph","WebGraph","AdFlush","AdVersa"]
+    methods=["none","retrain_filterlist","retrain_pseudo10","retrain_pseudo20","retrain_pseudo30"]
+
+    with open(os.path.join("..","models","features.yaml"),"r") as yamlfile:
+        features=yaml.load(yamlfile, yaml.Loader)
+    print("Loading Dataset...")
+    dataframe=pd.read_parquet(os.path.join(data_parent_dir,"eval_8.parquet"))
+
+    print("Converting to H2O frame...")
+    h2o_dataframe=h2o.H2OFrame(dataframe)
+    label=dataframe["label"]
+    for method in methods:
+        print("Retraining method:",method)
+        if method=="none":
+            model_parent_dir=model_parent_dir_outdate
+        else:
+            model_parent_dir=os.path.join(model_parent_dir_retrain,method)
+        for model in models:
+            try:
+                if model.endswith("Graph"):
+                    model_object=joblib.load(os.path.join(model_parent_dir,model+".joblib"))
+                    model_input=dataframe[features[f"model_{model}"]]
+                    pred=model_object.predict(model_input)
+                else:
+                    model_object=h2o.import_mojo(os.path.join(model_parent_dir,model))
+                    model_input=h2o_dataframe[features[f"model_{model}"]]
+                    pred=model_object.predict(model_input)
+                    pred=pred.as_data_frame().predict
+                f1=f1_score(label, pred.tolist())
+                print(f"\tModel: {model}, F1 Score: {f1}")
+            except Exception as e:
+                print(e)
+        print("")
+    return
+
 def robustness():
+
     return
 
 def ablation():
