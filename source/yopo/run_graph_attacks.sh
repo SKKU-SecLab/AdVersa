@@ -11,7 +11,7 @@ set -e  # Exit on error
 
 # Data path
 DATA_PATH="../../dataset/testing"
-OUTPUT_DIR="graph_attack_results_web_1001"
+OUTPUT_DIR="graph_attack_results"
 
 # Attack parameters (matching original YOPO)
 LAGRANGIAN=400

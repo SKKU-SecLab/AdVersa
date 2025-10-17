@@ -21,6 +21,8 @@ import numpy as np
 import warnings
 warnings.filterwarnings('ignore')
 from sklearn.ensemble import RandomForestClassifier
+import statistics
+os.environ['JOBLIB_VERBOSITY'] = '0'
 
 def main(program, argv):
     main_parser=argparse.ArgumentParser(description="Reproduce AdVersa's Evaluation")
@@ -32,8 +34,9 @@ def main(program, argv):
         'robustness',
         'ablation'
     ])
-
-    main_parser.add_argument("-t", type=int,default=10, required=False, help="Num. threads to use")
+    main_parser.add_argument("-m", type=str,default="AdVersa",choices=["AdVersa","AdGraph","WebGraph","AdFlush"], required=False,help="Target model for YOPO attack")
+    main_parser.add_argument("-e", type=int,default=10, choices=[5,10,20,40],required=False, help="Epsilon for YOPO attack")
+    main_parser.add_argument("-c", type=str,default="DC", required=False, help="Cost model for YOPO attack")    
 
     main_args=main_parser.parse_args()
     h2o.init(enable_assertions = False, log_level="ERRR")
@@ -49,7 +52,25 @@ def main(program, argv):
     elif main_args.p=="temporal_shift":
         temporal_shift()
     elif main_args.p=="robustness":
-        robustness()
+        nostat=False
+        if main_args.m=="AdVersa":
+            if main_args.c not in ["DC","HJC","HCC"]:
+                nostat=True
+        elif main_args.m=="AdGraph":
+            if main_args.c not in ["DC","HSC","HCC"]:
+                nostat=True
+        elif main_args.m=="WebGraph":
+            if main_args.c not in ["DC","HSC"]:
+                nostat=True
+        elif main_args.m=="AdFlush":
+            if main_args.c not in ["DC","HJC","HCC"]:
+                nostat=True
+        
+        if nostat:
+            print("Unavailable strategy. Exiting program.")
+            exit(1)
+        else:
+            robustness(main_args.m,main_args.e,main_args.s)
     elif main_args.p=="ablation":
         ablation()
     print("================End Process================")
@@ -72,7 +93,7 @@ def model_selection():
     dataframe=pd.concat(dataframe)
     print("Converting to H2O frame...")
     h2o_dataframe=h2o.H2OFrame(dataframe)
-    label=dataframe["label"]
+    label=dataframe["label"].tolist()
 
     for model in models:
         h2o_model=h2o.import_mojo(os.path.join(model_parent_dir,model))
@@ -100,7 +121,7 @@ def sota_comparison():
     dataframe=pd.concat(dataframe)
     print("Converting to H2O frame...")
     h2o_dataframe=h2o.H2OFrame(dataframe)
-    label=dataframe["label"]
+    label=dataframe["label"].tolist()
 
     for model in models:
         if model.endswith("joblib"):
@@ -135,7 +156,7 @@ def unseen_domain():
     dataframe=pd.concat(dataframe)
     print("Converting to H2O frame...")
     h2o_dataframe=h2o.H2OFrame(dataframe)
-    label=dataframe["label"]
+    label=dataframe["label"].tolist()
 
     for model in models:
         if model.endswith("Graph"):
@@ -167,7 +188,7 @@ def temporal_shift():
 
     print("Converting to H2O frame...")
     h2o_dataframe=h2o.H2OFrame(dataframe)
-    label=dataframe["label"]
+    label=dataframe["label"].tolist()
     for method in methods:
         print("Retraining method:",method)
         if method=="none":
@@ -192,18 +213,68 @@ def temporal_shift():
         print("")
     return
 
-def robustness():
+def robustness(model, eps,cost_model):
+    print("-----------------Robustness-----------------")
+    dataframe=[]
+    data_parent_dir=os.path.join("..","dataset","testing")
+    model_parent_dir=os.path.join("..","models","sota_comparison")
+    datasets=os.listdir(data_parent_dir)
+    models=["AdGraph","WebGraph","AdFlush","AdVersa"]
 
-    return
+    with open(os.path.join("..","models","features.yaml"),"r") as yamlfile:
+        features=yaml.load(yamlfile, yaml.Loader)
+    print("Loading Datasets...")
+    for dataset in datasets:
+        pq=pd.read_parquet(os.path.join(data_parent_dir,dataset))
+        dataframe.append(pq)
+    dataframe=pd.concat(dataframe)
+    label=dataframe["label"].tolist()
+    dataframe=dataframe[features[f"model_{model}"]]
 
-def ablation():
+    if not model.endswith("Graph"):
+        print("Converting to H2O frame...")
+        h2o_dataframe=h2o.H2OFrame(dataframe)
+    
+    perturb_parent_dir=os.path.join("yopo","perturbations",model)
+    asrs=[]
+    rec_drops=[]
+    f1_drops=[]
+    for i in range(1,11):
+        perturbation=np.load(os.path.join(perturb_parent_dir,f"{cost_model}_eps{eps}_iter{i}.npy"))
+
+        # Clean results
+        if model.endswith("Graph"):
+            model_object=joblib.load(os.path.join(model_parent_dir,model+".joblib"))
+            pred=model_object.predict(dataframe)
+        else:
+            model_object=h2o.import_mojo(os.path.join(model_parent_dir,model))
+            pred=model_object.predict(h2o_dataframe)
+            pred=pred.as_data_frame().predict
+        _,_,clean_rec,clean_f1,_,_=metrics(label, pred.tolist(), False, True,False,None)
+        # Adversarial results
+        if model.endswith("Graph"):
+            model_object=joblib.load(os.path.join(model_parent_dir,model+".joblib"))
+            model_input=dataframe.add(perturbation,axis="columns")
+            pred=model_object.predict(model_input)
+        else:
+            model_object=h2o.import_mojo(os.path.join(model_parent_dir,model))
+            perturbation_frame = h2o.H2OFrame([perturbation]) 
+            perturbation_frame.columns = h2o_dataframe.columns
+            model_input = h2o_dataframe + perturbation_frame
+            pred=model_object.predict(model_input)
+            pred=pred.as_data_frame().predict
+        asr,_,_,rec,f1,_,_=metrics(label, pred.tolist(), True, True,False,None)
+        asrs.append(asr)
+        rec_drops.append(clean_rec-rec)
+        f1_drops.append(clean_f1-f1)
+    print(f"Model: {model}, epsilon: {eps}, cost model: {cost_model}, ASR: {statistics.median(asrs)}, REC drop: {statistics.median(rec_drops)}, F1 drop: {statistics.median(f1_drops)}")
     return
 
 def metrics(true, pred, _is_mutated, _return,fprint,outfile):
     asr=None
     if _is_mutated:
-        total_attacks = len(true)
-        successful_attacks = sum(true != pred)
+        total_attacks = sum(1 for e in true if e==True)
+        successful_attacks = sum(1 for i in range(len(true)) if true[i]==True and pred[i]==False)
         asr=successful_attacks/total_attacks
 
     tn, fp, fn, tp = confusion_matrix(true, pred).ravel()
@@ -225,9 +296,12 @@ def metrics(true, pred, _is_mutated, _return,fprint,outfile):
     cutoff=int(thresholds[np.argmax(tprlist-fprlist)])
     opttpr=tprlist[cutoff]
     optfpr=fprlist[cutoff]
-
+    
     if _return:
-        return acc,pre,rec,f1,fnr,fpr
+        if _is_mutated:
+            return asr,acc,pre,rec,f1,fnr,fpr
+        else:
+            return acc,pre,rec,f1,fnr,fpr
         
     else:   
         output_lines = [
