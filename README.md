@@ -26,6 +26,11 @@ This study has been run and tested in both *Ubuntu 20.04.6 LTS (Focal Fossa)* an
 ## 0-2. Clone Repository
 Click the "Download Repository" button in the upper right corner of this anonymous repository. 
 Unzip the contents to the directory you want. 
+Ensure the LFS files are pulled, and if not, run the code below:
+```bash
+$ cd AdVersa-F8F6
+$ git lfs pull
+```
 
 ## 0-3. Install Datasets
 Due to the file storage limits, we provide our datasets via Zenodo. Download all data listed <a href="https://zenodo.org/records/17295030">here</a> and place the files corresponding to the *.placeholder* files. 
