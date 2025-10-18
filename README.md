@@ -29,6 +29,7 @@ Unzip the contents to the directory you want.
 Ensure the LFS files are pulled, and if not, run the code below:
 ```bash
 $ cd AdVersa-F8F6
+$ git lfs install
 $ git lfs pull
 ```
 
