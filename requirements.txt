@@ -4,3 +4,9 @@ pyyaml
 pandas
 pyarrow
 numpy==1.24.4
+mitmproxy
+onnxruntime
+model2vec
+tldextract
+optimum[onnxruntime]
+transformers

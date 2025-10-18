@@ -1,0 +1,16 @@
+{
+  "name": "jsparser",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "jsparser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "acorn-loose": "^8.5.2",
+    "worker-threads": "^1.0.0"
+  }
+}

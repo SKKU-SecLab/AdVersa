@@ -1,0 +1,282 @@
+[
+    {
+        "id": 1,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "main_frame" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "main_frame"
+            ]
+        }
+    },
+    {
+        "id": 2,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "sub_frame" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "sub_frame"
+            ]
+        }
+    },
+    {
+        "id": 3,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "script" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "script"
+            ]
+        }
+    },
+    {
+        "id": 4,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "image" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "image"
+            ]
+        }
+    },
+    {
+        "id": 5,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "xmlhttprequest" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "xmlhttprequest"
+            ]
+        }
+    },
+    {
+        "id": 6,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "stylesheet" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "stylesheet"
+            ]
+        }
+    },
+    {
+        "id": 7,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "font" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "font"
+            ]
+        }
+    },
+    {
+        "id": 8,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "beacon" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "ping"
+            ]
+        }
+    },
+    {
+        "id": 9,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "websocket" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "websocket"
+            ]
+        }
+    },    
+    {
+        "id": 10,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "websocket" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "webtransport","webbundle"
+            ]
+        }
+    },
+    {
+        "id": 11,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "media" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "media"
+            ]
+        }
+    },
+    {
+        "id": 12,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "csp_report" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "csp_report"
+            ]
+        }
+    },
+    {
+        "id": 13,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "other" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "other"
+            ]
+        }
+    },
+    {
+        "id": 14,
+        "priority": 9,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                "header": "afp-resource-type",
+                "operation": "set",
+                "value": "object" 
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*",
+            "resourceTypes": [
+                "object"
+            ]
+        }
+    }
+]

@@ -1,0 +1,34 @@
+{
+    "manifest_version": 3,
+    "name": "AdVersa Extension",
+    "version": "1.0",
+    "description": "Redirects all browser traffic to AdVersa's local proxy server.",
+    "permissions": [
+      "proxy",
+      "declarativeNetRequest",
+      "webNavigation",
+      "tabs",
+      "storage"
+    ],
+    "host_permissions": [
+      "<all_urls>"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action":{
+      "default_popup":"popup.html"
+    },
+    "declarative_net_request":{
+      "rule_resources":[
+        {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path":"rules.json"
+        }
+      ]
+    },
+    "icons":{
+      "64":"icon64.png"
+    }
+  }
