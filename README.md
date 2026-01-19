@@ -1,5 +1,4 @@
-# *AdVersa*: Adversarially-Robust and Practical Ad and Tracker Blocking in the Wild
-
+# *AdVersa*: Adversarially-Robust and Practical Ad and Tracker Blocking in the Wild (WWW 2026)
 ## Abstract
 While machine learning has significantly advanced ad and tracker detection, existing systems face critical challenges in practice. They are vulnerable to adversarial attacks (57-92% evasion rates), fail to generalize to unseen domains due to data contamination, and suffer performance degradation over time, requiring costly retraining. To address these challenges, we present AdVersa, a client-side framework for robust and practical ad and tracker blocking. AdVersa leverages novel, hard-to-perturb latent features from code and URL embeddings to deliver state-of-the-art performance. On a 2.74M-request dataset, our results show that AdVersa achieves a 98.23% F1 score, twice the robustness against adversarial attacks, and strong generalization to unseen domains (91.47% F1 score). For sustainable protection, we demonstrate that a low-cost pseudo-labeling strategy can maintain near-optimal accuracy, reducing maintenance overhead by over 99.8% compared to filter-list curation. Finally, we implement AdVersa as a lightweight, standalone client-side application that ensures user privacy by operating without external dependencies. 
 
@@ -141,4 +140,14 @@ TPR 0.9825073170731707 at FPR 0.009277229634296282
 
 5. Click on *AdVersa's* browser extension icon, and click the toggle to turn `Proxy On`.
 
-6. Surf the web with *AdVersa*, ad and tracker free. 
+6. Surf the web with *AdVersa*, ad and tracker free.
+
+## Cite *AdVersa*
+```
+@inproceedings{
+  title={{AdVersa: Adversarially-Robust and Practical Ad and Tracker Blocking in the Wild}},
+  author={Lim, Chaejin and Lee, Kiho and Jin, Beomjin and Baek, Heewon and Kim, Hyoungshick},
+  booktitle={Proceedings of the ACM Web Conference (WWW)},
+  year={2026}
+}
+```
