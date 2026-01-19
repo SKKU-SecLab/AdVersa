@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the following conference paper."
+authors:
+  - family-names: "Lim"
+    given-names: "Chaejin"
+    orcid: "https://orcid.org/0009-0009-3547-4904"
+  - family-names: "Lee"
+    given-names: "Kiho"
+    orcid: "https://orcid.org/0000-0002-8713-3863"
+  - family-names: "Jin"
+    given-names: "Beomjin"
+    orcid: "https://orcid.org/0000-0002-3237-0327"
+  - family-names: "Baek"
+    given-names: "Heewon"
+    orcid: "https://orcid.org/0009-0006-7009-3646"
+  - family-names: "Kim"
+    given-names: "Hyoungshick"
+    orcid: "https://orcid.org/0000-0002-1605-3866"
+title: "AdVersa Github"
+version: 1.0.0
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.18297209
+date-released: 2026-01-19 
+url: "https://github.com/SKKU-SecLab/AdVersa"
+preferred-citation:
+  type: conference-paper
+  authors:
+    - family-names: "Lim"
+      given-names: "Chaejin"
+      orcid: "https://orcid.org/0009-0009-3547-4904"
+    - family-names: "Lee"
+      given-names: "Kiho"
+      orcid: "https://orcid.org/0000-0002-8713-3863"
+    - family-names: "Jin"
+      given-names: "Beomjin"
+      orcid: "https://orcid.org/0000-0002-3237-0327"
+    - family-names: "Baek"
+      given-names: "Heewon"
+      orcid: "https://orcid.org/0009-0006-7009-3646"
+    - family-names: "Kim"
+      given-names: "Hyoungshick"
+      orcid: "https://orcid.org/0000-0002-1605-3866"
+  title: "AdVersa: Adversarially-Robust and Practical Ad and Tracker Blocking in the Wild"
+  collection-title: "Proceedings of the ACM Web Conference"
+  year: 2026
